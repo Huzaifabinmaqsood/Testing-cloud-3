@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FitPulse Gym</title>
+  <style>
+    :root{
+      --bg:#0f172a;         /* slate-900 */
+      --panel:#111827;      /* gray-900 */
+      --muted:#94a3b8;      /* slate-400 */
+      --text:#e5e7eb;       /* gray-200 */
+      --accent:#22c55e;     /* green-500 */
+      --accent-2:#06b6d4;   /* cyan-500 */
+      --danger:#ef4444;     /* red-500 */
+      --ring:rgba(34,197,94,.35);
+      --card:#0b1220;       /* deeper */
+      --shadow: 0 10px 25px rgba(0,0,0,.35);
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0}
+    body{
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 100% -10%, #0b1220, #0f172a);
+      color:var(--text);
+      line-height:1.6;
+    }
+
+    /* Utility */
+    .container{max-width:1100px;margin:0 auto;padding:0 1rem}
+    .btn{display:inline-block;padding:.8rem 1.1rem;border-radius:12px;text-decoration:none;font-weight:600}
+    .btn.primary{background:var(--accent);color:#06250f;box-shadow: var(--shadow)}
+    .btn.ghost{outline:1.5px solid #1f2937;color:var(--text);}
+    .grid{display:grid;gap:1.2rem}
+    .card{background:linear-gradient(180deg, #0d1424, #0a1120);border:1px solid #1f2937;border-radius:16px;box-shadow:var(--shadow);}
+    .card .content{padding:1.2rem}
+    .tag{display:inline-block;padding:.2rem .5rem;border-radius:999px;background:#12223a;border:1px solid #21324f;color:#9cc3ff;font-size:.75rem}
+
+    /* Header */
+    header{position:sticky;top:0;backdrop-filter: blur(6px);background:rgba(15,23,42,.65);border-bottom:1px solid #1f2937;z-index:40}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:.8rem 0}
+    .brand{display:flex;gap:.6rem;align-items:center;font-weight:800;letter-spacing:.5px}
+    .logo{width:34px;height:34px;border-radius:10px;background:conic-gradient(from 210deg,#22c55e,#06b6d4);display:grid;place-items:center;color:#042015;font-weight:900}
+    nav a{color:var(--muted);text-decoration:none;margin:0 .6rem;font-weight:600}
+    nav a:hover{color:#cbd5e1}
+
+    /* Hero */
+    .hero{padding:5rem 0 3rem;display:grid;gap:2rem}
+    .hero-inner{display:grid;grid-template-columns:1.1fr .9fr;gap:1.5rem;align-items:center}
+    .hero h1{font-size:clamp(2rem, 5vw, 3rem);line-height:1.15;margin:.2rem 0}
+    .hero p{color:var(--muted);max-width:60ch}
+    .hero-cta{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1rem}
+
+    .hero .visual{position:relative;min-height:320px;border-radius:20px;overflow:hidden;border:1px solid #1f2937;background:
+      radial-gradient(600px 300px at -10% 0%, rgba(6,182,212,.15), transparent),
+      radial-gradient(800px 400px at 120% 120%, rgba(34,197,94,.15), transparent),
+      linear-gradient(180deg,#0a1324,#060d1a);
+    }
+    .plates{position:absolute;inset:0;display:grid;place-items:center}
+    .plate{width:160px;height:160px;border-radius:50%;border:8px solid #1f2937;background:#0f1b33;box-shadow:inset 0 0 0 6px #0a1426, 0 30px 60px rgba(0,0,0,.35)}
+    .plate:nth-child(2){transform:translate(120px,-20px) scale(.85)}
+    .plate:nth-child(3){transform:translate(-120px,20px) scale(.7)}
+
+    /* Sections */
+    section{padding:3rem 0}
+    section h2{font-size:clamp(1.4rem,3.2vw,2rem);margin:0 0 .8rem}
+    section p.lead{color:var(--muted);margin-top:-.4rem}
+
+    /* Features */
+    .features{grid-template-columns:repeat(3,1fr)}
+    .feature h3{margin:.2rem 0}
+    .feature p{color:var(--muted)}
+
+    /* Classes */
+    .classes{grid-template-columns:repeat(3,1fr)}
+    .class-card img{width:100%;height:180px;object-fit:cover;border-top-left-radius:16px;border-top-right-radius:16px;border-bottom:1px solid #1f2937}
+    .class-card h3{margin:.4rem 0}
+
+    /* Pricing */
+    .pricing{grid-template-columns:repeat(3,1fr)}
+    .price .value{font-size:2rem;font-weight:800}
+    .price ul{padding-left:1.1rem;color:var(--muted)}
+
+    /* Trainers */
+    .trainers{grid-template-columns:repeat(4,1fr)}
+    .trainer img{width:100%;height:210px;object-fit:cover;border-top-left-radius:16px;border-top-right-radius:16px;border-bottom:1px solid #1f2937}
+    .trainer h4{margin:.4rem 0 0}
+    .trainer p{color:var(--muted);margin:.1rem 0 .6rem}
+
+    /* Contact */
+    form{display:grid;gap:.8rem}
+    input, textarea{width:100%;padding:.9rem 1rem;border-radius:12px;border:1px solid #1f2937;background:#0a1220;color:var(--text)}
+    input:focus, textarea:focus{outline:3px solid var(--ring);border-color:var(--accent)}
+
+    /* Footer */
+    footer{padding:2rem 0;color:#9aa3b2;border-top:1px solid #1f2937;background:rgba(2,6,12,.3)}
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero-inner{grid-template-columns:1fr}
+      .features,.classes,.pricing,.trainers{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width: 640px){
+      nav{display:none}
+      .features,.classes,.pricing,.trainers{grid-template-columns:1fr}
+      .hero{padding:4rem 0 2rem}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo">FP</div>
+        <span>FitPulse Gym</span>
+      </div>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#classes">Classes</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#trainers">Trainers</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div>
+        <span class="tag">Open 24/7 • Gulberg, Lahore</span>
+        <h1>Build strength, boost energy, and feel amazing.</h1>
+        <p>State-of-the-art equipment, expert coaches, and a friendly community. Start your fitness journey today with a plan that fits your goals and schedule.</p>
+        <div class="hero-cta">
+          <a class="btn primary" href="#pricing">Join Now</a>
+          <a class="btn ghost" href="#classes">View Classes</a>
+        </div>
+      </div>
+      <div class="visual">
+        <div class="plates">
+          <div class="plate"></div>
+          <div class="plate"></div>
+          <div class="plate"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features">
+    <div class="container">
+      <h2>Everything you need to crush your goals</h2>
+      <p class="lead">Premium gear, thoughtful programming, and real support.</p>
+      <div class="grid features">
+        <div class="card feature">
+          <div class="content">
+            <h3>Modern Equipment</h3>
+            <p>From squat racks to assault bikes—carefully maintained and ready for you.</p>
+          </div>
+        </div>
+        <div class="card feature">
+          <div class="content">
+            <h3>Personal Coaching</h3>
+            <p>Certified trainers tailor plans to your goals, time, and experience level.</p>
+          </div>
+        </div>
+        <div class="card feature">
+          <div class="content">
+            <h3>Group Classes</h3>
+            <p>HIIT, Strength, Yoga, and more. Train with a crew that keeps you motivated.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Classes -->
+  <section id="classes">
+    <div class="container">
+      <h2>Popular Classes</h2>
+      <p class="lead">Pick a class that matches your vibe.</p>
+      <div class="grid classes">
+        <div class="card class-card">
+          <img src="https://images.unsplash.com/photo-1517963628607-235ccdd5476b?q=80&w=1200&auto=format&fit=crop" alt="Strength class"/>
+          <div class="content">
+            <h3>Strength 101</h3>
+            <p>Compound lifts and technique work for all levels.</p>
+          </div>
+        </div>
+        <div class="card class-card">
+          <img src="https://images.unsplash.com/photo-1558611848-73f7eb4001a1?q=80&w=1200&auto=format&fit=crop" alt="HIIT class"/>
+          <div class="content">
+            <h3>HIIT Burn</h3>
+            <p>Short, spicy intervals to boost stamina and torch calories.</p>
+          </div>
+        </div>
+        <div class="card class-card">
+          <img src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=1200&auto=format&fit=crop" alt="Yoga class"/>
+          <div class="content">
+            <h3>Power Yoga</h3>
+            <p>Mobility, balance, and breathwork for a stronger body-mind.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing">
+    <div class="container">
+      <h2>Simple, flexible pricing</h2>
+      <p class="lead">No sign-up fee. Cancel anytime.</p>
+      <div class="grid pricing">
+        <div class="card price">
+          <div class="content">
+            <span class="tag">Starter</span>
+            <h3 class="value">Rs 3,500<span style="font-size:.9rem;font-weight:600">/mo</span></h3>
+            <ul>
+              <li>Gym floor access</li>
+              <li>2 group classes / week</li>
+              <li>Locker & showers</li>
+            </ul>
+            <a href="#contact" class="btn primary">Choose Plan</a>
+          </div>
+        </div>
+        <div class="card price">
+          <div class="content">
+            <span class="tag">Pro</span>
+            <h3 class="value">Rs 5,500<span style="font-size:.9rem;font-weight:600">/mo</span></h3>
+            <ul>
+              <li>Unlimited classes</li>
+              <li>Personalized program</li>
+              <li>Body composition scan</li>
+            </ul>
+            <a href="#contact" class="btn primary">Choose Plan</a>
+          </div>
+        </div>
+        <div class="card price">
+          <div class="content">
+            <span class="tag">PT Plus</span>
+            <h3 class="value">Rs 9,500<span style="font-size:.9rem;font-weight:600">/mo</span></h3>
+            <ul>
+              <li>4 PT sessions / month</li>
+              <li>Unlimited classes</li>
+              <li>Nutrition guidance</li>
+            </ul>
+            <a href="#contact" class="btn primary">Choose Plan</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trainers -->
+  <section id="trainers">
+    <div class="container">
+      <h2>Meet the Trainers</h2>
+      <p class="lead">Experienced, supportive, and certified.</p>
+      <div class="grid trainers">
+        <div class="card trainer">
+          <img src="https://images.unsplash.com/photo-1554520735-0a6b8b6a0b9a?q=80&w=1200&auto=format&fit=crop" alt="Trainer A"/>
+          <div class="content">
+            <h4>Ali Raza</h4>
+            <p>Strength & Conditioning</p>
+            <a class="btn ghost" href="#contact">Book a Session</a>
+          </div>
+        </div>
+        <div class="card trainer">
+          <img src="https://images.unsplash.com/photo-1541535881962-3bb380b08458?q=80&w=1200&auto=format&fit=crop" alt="Trainer B"/>
+          <div class="content">
+            <h4>Hira Khan</h4>
+            <p>Functional Fitness</p>
+            <a class="btn ghost" href="#contact">Book a Session</a>
+          </div>
+        </div>
+        <div class="card trainer">
+          <img src="https://images.unsplash.com/photo-1583454155184-2482f5524f6b?q=80&w=1200&auto=format&fit=crop" alt="Trainer C"/>
+          <div class="content">
+            <h4>Usman Tariq</h4>
+            <p>Mobility & Rehab</p>
+            <a class="btn ghost" href="#contact">Book a Session</a>
+          </div>
+        </div>
+        <div class="card trainer">
+          <img src="https://images.unsplash.com/photo-1605296867724-fa87a8ef53fd?q=80&w=1200&auto=format&fit=crop" alt="Trainer D"/>
+          <div class="content">
+            <h4>Maryam Ali</h4>
+            <p>Yoga & Breathwork</p>
+            <a class="btn ghost" href="#contact">Book a Session</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="container">
+      <h2>Get in touch</h2>
+      <p class="lead">Questions or ready to join? Send a message and we’ll reply shortly.</p>
+      <div class="grid" style="grid-template-columns:1.2fr .8fr;align-items:start">
+        <div class="card">
+          <div class="content">
+            <form onsubmit="event.preventDefault(); alert('Thanks! We will contact you soon.');">
+              <input type="text" placeholder="Full Name" required />
+              <input type="email" placeholder="Email Address" required />
+              <input type="tel" placeholder="Phone (optional)" />
+              <textarea rows="5" placeholder="Your message"></textarea>
+              <button class="btn primary" type="submit">Send Message</button>
+            </form>
+          </div>
+        </div>
+        <div class="card">
+          <div class="content">
+            <h3>Visit Us</h3>
+            <p>2nd Floor, Pace Circle, Gulberg III, Lahore</p>
+            <p><strong>Hours:</strong> 24/7 Access (Staff 8am–10pm)</p>
+            <p><strong>Phone:</strong> (042) 123-4567</p>
+            <p><strong>Email:</strong> hello@fitpulse.pk</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">
+      <small>© <span id="y"></span> FitPulse Gym. All rights reserved.</small>
+      <div>
+        <a href="#features">Features</a> ·
+        <a href="#pricing">Pricing</a> ·
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
